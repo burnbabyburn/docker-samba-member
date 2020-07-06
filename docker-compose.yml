@@ -1,5 +1,3 @@
-
-
 version: '2'
 
 networks:
@@ -8,10 +6,9 @@ networks:
       name: pihole_pihole_network
 services:
 
- freeradius:
- # image: "marcelmaatkamp/freeradius"
+ samba-member:
   build: .
-  container_name: freeradius
+  container_name: samba-member
   ports:
    - "1812:1812/udp"
    - "1813:1813"
@@ -35,13 +32,12 @@ services:
    - DEBUG=false
    - DEBUGLEVEL=0
    - NTPSERVERLIST=DC01
-   - NETBIOS_NAME=$(hostname)
    - LOG_LEVEL=0
    - IDMIN=10000
    - IDMAX=999999
    - RFC2307=true
   domainname: ad.chaos
-  hostname: freeradius
+  hostname: samba-member
   extra_hosts:
    - "dc01.ad.chaos dc01:192.168.1.45"
   volumes:
@@ -52,16 +48,4 @@ services:
    macvlan-samba:
     ipv4_address: 192.168.1.51
   cap_add:
-
    - SYS_TIME
-
- #freeradius-test:
-  #image: "marcelmaatkamp/freeradius"
-# build: "docker-alpine-radius/"
-  #command: "radtest testing password freeradius 0 SECRET"
-  #networks:
-   #macvlan-samba:
-    #ipv4_address: 192.168.1.52
-
-#   - freeradius.ad.chaos:192.168.1.51
-   #- NET_ADMIN
