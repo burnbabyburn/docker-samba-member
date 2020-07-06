@@ -53,7 +53,6 @@ appSetup () {
   fi
 
   if [ ! -f /etc/samba/external/smb.conf ]; then
-    sed -i "s:MYDOMAIN:$(echo "$URDOMAIN" | tr '[:upper:]' '[:lower:]'):" /etc/freeradius/3.0/mods-available/ntlm_auth
     sed -e "s:{{ NETBIOS_NAME }}:$NETBIOS_NAME:" \
       -e "s:{{ UDOMAIN }}:$UDOMAIN:" \
       -e "s:{{ URDOMAIN }}:$URDOMAIN:" \
