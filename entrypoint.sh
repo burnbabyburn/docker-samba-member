@@ -110,7 +110,7 @@ appSetup () {
 }
 
 appFirstStart () {
-    net ads join -U "$DOMAINUSER"%"$DOMAINPASS" "$UDOMAIN" "$SAMBA_DEBUG_OPTION"
+    net ads join -U"$DOMAINUSER"%"$DOMAINPASS" "$SAMBA_DEBUG_OPTION" "$UDOMAIN"
     /usr/bin/supervisord -c "/etc/supervisor/supervisord.conf"
 }
 
