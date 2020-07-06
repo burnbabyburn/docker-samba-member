@@ -81,6 +81,7 @@ appSetup () {
   
   sed -e "s:{{ UDOMAIN }}:$UDOMAIN:" \
     -e "s:{{ LDOMAIN }}:$LDOMAIN:" \
+	-e "s:{{ NETBIOS_NAME }}:$NETBIOS_NAME:" \
   -i /etc/krb5.conf
   
   sed -e "s:{{ SAMBA_DEBUG_OPTION }}:$SAMBA_DEBUG_OPTION:" \
