@@ -1,0 +1,67 @@
+
+
+version: '2'
+
+networks:
+  macvlan-samba:
+    external:
+      name: pihole_pihole_network
+services:
+
+ freeradius:
+ # image: "marcelmaatkamp/freeradius"
+  build: .
+  container_name: freeradius
+  ports:
+   - "1812:1812/udp"
+   - "1813:1813"
+   - "18120:18120"
+  dns_search:
+   - ad.chaos
+  dns:
+   - 192.168.1.45
+   - 192.168.1.6
+  environment:
+   - DOMAIN=AD.CHAOS
+   - DOMAINUSER=Administrator
+   - DOMAINPASS=Pa!!word1
+   - LOG_LEVEL=3
+   - WINBIND_REFRESH_TICKETS=yes
+   - WINBIND_USE_DEFAULT_DOMAIN=yes
+   - BIND_INTERFACES_ONLY=true
+   - BIND_INTERFACES=eth0 lo
+   - WINBIND_REFRESH_TICKETS=true
+   - WINBIND_USE_DEFAULT_DOMAIN=false
+   - DEBUG=false
+   - DEBUGLEVEL=0
+   - NTPSERVERLIST=DC01
+   - NETBIOS_NAME=$(hostname)
+   - LOG_LEVEL=0
+   - IDMIN=10000
+   - IDMAX=999999
+   - RFC2307=true
+  domainname: ad.chaos
+  hostname: freeradius
+  extra_hosts:
+   - "dc01.ad.chaos dc01:192.168.1.45"
+  volumes:
+   - /etc/localtime:/etc/localtime:ro
+   - "./clients.conf:/etc/raddb/clients.conf"
+   - "./users:/etc/raddb/users"
+  networks:
+   macvlan-samba:
+    ipv4_address: 192.168.1.51
+  cap_add:
+
+   - SYS_TIME
+
+ #freeradius-test:
+  #image: "marcelmaatkamp/freeradius"
+# build: "docker-alpine-radius/"
+  #command: "radtest testing password freeradius 0 SECRET"
+  #networks:
+   #macvlan-samba:
+    #ipv4_address: 192.168.1.52
+
+#   - freeradius.ad.chaos:192.168.1.51
+   #- NET_ADMIN
